@@ -1,5 +1,6 @@
 import logging
 import subprocess
+from collections.abc import Iterable
 
 import aiohttp
 import asyncio
@@ -61,6 +62,26 @@ def get_git_info() -> tuple[str, str]:
 git_version, repo_url = get_git_info()
 
 status_msg = f"twitterbot v{git_version} | Source: {repo_url}"
+
+def remove_fallbacks(body: str, fallbacks: Iterable[str]) -> str:
+    # get out fallback ranges for features we support
+    ranges_to_remove = []
+    for fallback in fallbacks:
+        if fallback["for"] == "urn:xmpp:reply:0":
+            start = int(fallback["body"]["start"])
+            end = int(fallback["body"]["end"])
+            ranges_to_remove.append((start, end))
+    # Remove in reverse order so indices stay valid
+    ranges_to_remove.sort(reverse=True)
+    result = list(body)
+    for start, end in ranges_to_remove:
+        if end > len(result):
+            continue
+        if start < 0:
+            continue
+        del result[start:end]
+
+    return "".join(result).strip()
 
 class MUCBot(slixmpp.ClientXMPP):
 
@@ -179,7 +200,10 @@ class MUCBot(slixmpp.ClientXMPP):
         )
 
         # slixmpp stanza interface [] always returns a string, empty if not present
-        for word in msg['body'].split(' '):
+        for word in remove_fallbacks(
+                msg['body'],
+                msg['fallbacks']
+        ).split(' '):
             if not word.startswith('https://x.com/'):
                 continue
 
