@@ -171,7 +171,7 @@ class MUCBot(slixmpp.ClientXMPP):
             (msg['from'].bare not in self.rooms and msg['type'] == "chat") \
             else msg['from']
 
-        origin_id = msg.get('origin-id', {}).get('id')
+        origin_id = msg.get('origin_id', {}).get('id')
 
         replyto_id = msg.get('stanza_id', {}).get('id', '') if msg['type'] == 'groupchat' else (
             origin_id if origin_id else msg['id']
