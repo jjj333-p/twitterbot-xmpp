@@ -190,7 +190,7 @@ class MUCBot(slixmpp.ClientXMPP):
             try:
                 result = await get_tweet(f"{PREFIX}{idpart}")
             except Exception as e:
-                message: slixmpp.stanza.Message = self['xep_0461'].make_reply(
+                message: slixmpp.stanza.Message = self.plugin['xep_0461'].make_reply(
                     msg['from'],
                     replyto_id,
                     f"> {word}",
@@ -208,7 +208,7 @@ class MUCBot(slixmpp.ClientXMPP):
                     + result.get('text', '').splitlines()
             )
 
-            message: slixmpp.stanza.Message = self['xep_0461'].make_reply(
+            message: slixmpp.stanza.Message = self.plugin['xep_0461'].make_reply(
                 msg['from'],
                 replyto_id,
                 f"> {word}",
