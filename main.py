@@ -100,6 +100,7 @@ class MUCBot(slixmpp.ClientXMPP):
                 presence_options=PresenceArgs(
                     pstatus=status_msg
                 ),
+                maxchars=0,
             )
 
     async def invite(self, msg):
