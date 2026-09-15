@@ -146,7 +146,7 @@ class MUCBot(slixmpp.ClientXMPP):
         if reason:
             print(f"Reason: {reason}")
 
-        # Optional: Join the room immediately using XEP-0045
+        # Join the room immediately
         try:
             await self.plugin['xep_0045'].join_muc_wait(
                 room_jid,
@@ -154,6 +154,7 @@ class MUCBot(slixmpp.ClientXMPP):
                 presence_options=PresenceArgs(
                     pstatus=status_msg
                 ),
+                maxchars=0,
             )
             print(f"Successfully joined {room_jid}")
         except Exception as e:
