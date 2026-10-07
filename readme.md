@@ -33,7 +33,6 @@ Create a `login.json` file in the project root:
 | `displayname`    | Yes      | Nickname used when joining MUC rooms.             |
 | `rooms`          | Yes      | List of MUC room JIDs to join on startup.         |
 | `twitter_prefix` | Yes      | URL prefix used to fetch tweet JSON by tweet ID.  |
-```
 
 ## Running
 
